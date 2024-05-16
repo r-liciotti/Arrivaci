@@ -9,7 +9,7 @@
 
 <h4 align="center">Piccolo progetto nato da una Counter App e finito in un gioco</a>.</h4>
 
-<p align="center">
+<!--<p align="center">
   <a href="https://badge.fury.io/js/electron-markdownify">
     <img src="https://badge.fury.io/js/electron-markdownify.svg"
          alt="Gitter">
@@ -21,7 +21,7 @@
   <a href="https://www.paypal.me/AmitMerchant">
     <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat">
   </a>
-</p>
+</p>-->
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
