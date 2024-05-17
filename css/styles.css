@@ -65,13 +65,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.8em;
+  font-size: 1.7em;
   font-weight: 600;
 
   width: 5vw;
   height: 5vw;
-  max-width: 60px;
-  max-height: 60px;
+  max-width: 50px;
+  max-height: 50px;
 
   border-radius: 28%;
   color: #141414;
@@ -120,6 +120,8 @@ nav {
 .tutorial .obj {
   width: 3vw;
   height: 3vw;
+  max-width: 40px;
+  max-height: 40px;
   min-width: 40px;
   min-height: 40px;
 
@@ -179,16 +181,26 @@ nav ul li {
 }
 
 nav .punteggio {
-  width: 55vw;
-  height: 25px;
+  width: 37vw;
+  height: 40px;
   display: inline-flex;
   align-items: center;
+  position: relative;
+}
+
+#punti{
+  position: absolute;
+  left: 50%;
+
+  font-size: 1.5em;
+  font-weight: 300;
+  font-style: italic;
 }
 
 #livello {
-  font-weight: 500;
+  font-weight: 700;
   margin-right: 12px;
-  font-size: 2em;
+  font-size: 3em;
 }
 
 nav .punteggio progress {

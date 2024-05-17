@@ -2,6 +2,9 @@
 // Controllo il disposivo sia touch o con mouse
 const clickOrTouch = isTouchDevice() === true ? 'touchstart' : 'click'
 
+//
+const titoloElement = document.querySelector(".titolo");
+
 // Counter
 const body = document.querySelector("body");
 const counterElement = document.createElement("div");
@@ -121,10 +124,13 @@ div_livelloElement.id = "livello";
 div_livelloElement.innerText = "1";
 progressElement.max = "100";
 progressElement.value = "0";
+const puntiElement = document.createElement("div");
+puntiElement.id = "punti";
+puntiElement.textContent = "0";
 
 div_PunteggioElement.appendChild(div_livelloElement);
 div_PunteggioElement.appendChild(progressElement);
-
+div_PunteggioElement.appendChild(puntiElement);
 
 
 navElement.appendChild(divElement);
@@ -142,9 +148,6 @@ navElement.style = "top: -150px;";
 
 
 
-
-
-
 var intervalID = null; // Variabile per gestire il tempo della comparizione degli obbiettivi
 startIcon.addEventListener(clickOrTouch, function (e) {
     startEvent(e);
@@ -152,7 +155,9 @@ startIcon.addEventListener(clickOrTouch, function (e) {
 
 
 li_PlayStopElement.addEventListener(clickOrTouch, function (e) {
+    pauseTimer();
     if (intervalID === null) {
+        startTimer();
         intervalID = setInterval(createObbiettivo, difficoltaTempo());
         e.currentTarget.firstChild.innerText = "pause";
         return;
@@ -183,8 +188,67 @@ var counterPosition = counterElement.getBoundingClientRect();
 
 
 var obbiettivi = [];
+// --------------------
+let tempo = 0;
+let seconds = 0;
+let minutes = 0;
+let intervalId;
+let isPaused = false;
+
+function pad(number, length) {
+    const str = String(number);
+    return '0'.repeat(length - str.length) + str;
+}
+
+function updateTimerDisplay() {
+    const timerElement = document.querySelector('.titolo');
+    const formattedTime = `${pad(minutes, 2)}:${pad(seconds, 2)}`;
+    timerElement.textContent = `${formattedTime}`;
+}
+
+function startTimer() {
+    clearInterval(intervalId); // Clear any existing interval
+    isPaused = false; // Reset paused state
+    intervalId = setInterval(() => {
+        if (!isPaused) {
+            tempo++;
+            seconds++;
+            if (seconds === 60) {
+                seconds = 0;
+                minutes++;
+            }
+        }
+        updateTimerDisplay();
+    }, 1000); // Update every second
+}
+
+function stopTimer() {
+    clearInterval(intervalId);
+    seconds = 0;
+    minutes = 0;
+    updateTimerDisplay();
+}
+
+function pauseTimer() {
+    isPaused = true;
+}
+
+function resumeTimer() {
+    isPaused = false;
+}
+
+function resetTimer() {
+    clearInterval(intervalId);
+    tempo = 0;
+    seconds = 0;
+    minutes = 0;
+    updateTimerDisplay();
+    isPaused = false; // Reset paused state
+    startTimer();
+}
 
 
+// -------------------------
 
 
 
@@ -226,9 +290,10 @@ function createObbiettivo() {
 
 
 function addFunction() {
-    console.log(counterElement.textContent);
+
     if (!isNaN(Number(counterElement.textContent))) {
         counterElement.textContent = parseInt(counterElement.textContent) + 1;
+
         controlloObbiettivo(parseInt(counterElement.textContent));
     }
 }
@@ -249,24 +314,38 @@ function generaNumeroCasuale(min, max) {
 function controlloObbiettivo(n) {
 
     if (obbiettivi.length < 1) { return; }
+
     if (parseInt(obbiettivi[0].textContent) === n) {
+        const liv = parseInt(div_livelloElement.textContent);
+        const punt = parseInt(puntiElement.textContent);
+        console.log(`${punt} + 100 - (${tempo} * ${liv}) / (0.2 * ${liv})`);
+        puntiElement.textContent = parseInt(punt + 100 - (tempo * liv) / (0.2 * liv));
+        console.log(tempo);
+        resetTimer();
+
         body.removeChild(obbiettivi[0]);
         obbiettivi.shift();
         progressElement.value = parseInt(progressElement.value) + 50; // Aumento proressione livello
+
+        //puntiElement.textContent = parseInt(puntiElement.textContent) + (10 - (parseInt(div_livelloElement.textContent) % 10) + (10 - (tempo % 10))); // Aumento punti
+        
         if (parseInt(progressElement.value) === 100) {
             progressElement.value = 0;
             div_livelloElement.textContent = parseInt(div_livelloElement.textContent) + 1;
+
             clearInterval(intervalID);
             intervalID = setInterval(createObbiettivo, difficoltaTempo());
         }
+
     }
 }
 
 function startEvent(e) {
-    console.log(e.target);
     e.target.classList.add("hide");
     tutorialDiv.remove();
-    console.log(e.target);
+    startTimer();
+
+    // titoloElement.textContent = "00:00";
     setTimeout(() => {
         counterElement.textContent = "0";
         intervalID = setInterval(createObbiettivo, difficoltaTempo());
@@ -278,7 +357,6 @@ function startEvent(e) {
 
     navElement.style = "top: 0px;";
     // Esegui la funzione ogni 5 secondi
-    console.log(difficoltaTempo());
     li_PlayStopElement.firstChild.innerText = "pause";
 
 }
@@ -335,6 +413,7 @@ function binding_Touch(e) { // Dispositivi Touch
 }
 
 function binding_keydown(e) {
+
     e.key === "+" ? addFunction() : null;
     e.key === "-" ? minusFunction() : null;
 }
