@@ -168,7 +168,10 @@ li_PlayStopElement.addEventListener(clickOrTouch, function (e) {
 
 });
 
-li_ResetElement.addEventListener(clickOrTouch, function (e) {
+li_ResetElement.addEventListener(clickOrTouch, function (e) {    
+    stopTimer();
+    titoloElement.textContent = "ARRIVACI!";
+    puntiElement.textContent = "0";
     clearInterval(intervalID);
     intervalID = null;
     div_livelloElement.textContent = "1";
@@ -176,6 +179,7 @@ li_ResetElement.addEventListener(clickOrTouch, function (e) {
     document.querySelectorAll(".obj").forEach(function (element) {
         element.remove();
     });
+    obbiettivi = [];
     startIcon.classList = "material-symbols-outlined"; // riscrivo la classe per toliere l'hide
 
     counterElement.innerText = "";
@@ -203,7 +207,7 @@ function pad(number, length) {
 function updateTimerDisplay() {
     const timerElement = document.querySelector('.titolo');
     const formattedTime = `${pad(minutes, 2)}:${pad(seconds, 2)}`;
-    timerElement.textContent = `${formattedTime}`;
+    titoloElement.textContent = `${formattedTime}`;
 }
 
 function startTimer() {
