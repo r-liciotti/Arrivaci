@@ -9,25 +9,13 @@
 
 <h4 align="center">Piccolo progetto nato da una Counter App e finito in un gioco</a>.</h4>
 
-<!--<p align="center">
-  <a href="https://badge.fury.io/js/electron-markdownify">
-    <img src="https://badge.fury.io/js/electron-markdownify.svg"
-         alt="Gitter">
-  </a>
-  <a href="https://gitter.im/amitmerchant1990/electron-markdownify"><img src="https://badges.gitter.im/amitmerchant1990/electron-markdownify.svg"></a>
-  <a href="https://saythanks.io/to/bullredeyes@gmail.com">
-      <img src="https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg">
-  </a>
-  <a href="https://www.paypal.me/AmitMerchant">
-    <img src="https://img.shields.io/badge/$-donate-ff69b4.svg?maxAge=2592000&amp;style=flat">
-  </a>
-</p>-->
+
 
 <p align="center">
   <a href="#descrizione">Descrizione</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#play">Play</a> •
-  <a href="#credits">Credits</a> •
+  <a href="#strumenti">Strumenti</a> •
 </p>
 
 ![screenshot](https://github.com/r-liciotti/Arrivaci/blob/514be9cfa84e1b5e57f56f4016f065b3cab330d0/video/trailer.gif)
@@ -48,9 +36,8 @@ E' possibile giocare sia con mouse,tastiera o con il touch di un dispositivo che
 
 Puoi giocarci da qui [Link](https://r-liciotti.github.io/Arrivaci/)
 
-## Emailware
 
-## Credits
+## Strumenti
 
 Progetto realizzato con:
 
