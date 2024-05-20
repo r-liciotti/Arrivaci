@@ -22,10 +22,10 @@
 
 ## Descrizione
 
-Arrivaci è un semplice gioco nato inizialmente da un progetto che richiedeva di realizzare una Counter App, per dare più significato ho deciso di renderlo un piccolo gioco.
+Arrivaci! è un semplice gioco, nato inizialmente da un progetto che richiedeva di realizzare una Counter App poi, per darli più significato, ho deciso di renderlo un piccolo gioco.
 L'obbiettivo è di fare più punti possibili, punti che si prendono aumentando o diminuendo il valore del counter in base agli obbiettivi che apparriranno sullo schermo.
 Si avranno al massimo dieci secondi per arrivare all'obbiettivo dopo i quali si farà Game Over.
-E' possibile giocare sia con mouse,tastiera o con il touch di un dispositivo che lo support (Smartphone/Tablet).
+E' possibile giocare sia con mouse, tastiera o con il touch di un dispositivo che lo supporti (Smartphone/Tablet).
 
 
 ## How To Use
