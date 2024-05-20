@@ -38,10 +38,14 @@ tutrial_li_Regole.classList = "regole"
 const tutrial_li1 = document.createElement('li');
 tutrial_li1.innerHTML = 'Questi sono i tuoi punti attuali <div class="counter">3</div>';
 const tutrial_li2 = document.createElement('li');
-tutrial_li2.innerHTML = 'Questi sono i punti da raggiungere <div class="obj">6</div>';
+tutrial_li2.innerHTML = 'Questi sono gli obbiettivi da raggiungere <div class="obj">6</div>';
+const tutrial_li3 = document.createElement('li');
+tutrial_li3.innerHTML = 'Raggiuni gli obbiettivi entro il tempo limite';
 tutrial_ul.appendChild(tutrial_li_Regole);
 tutrial_ul.appendChild(tutrial_li1);
 tutrial_ul.appendChild(tutrial_li2);
+tutrial_ul.appendChild(tutrial_li3);
+
 
 // Creazione degli elementi
 const gameOverDiv = document.createElement('div');
