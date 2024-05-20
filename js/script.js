@@ -1,6 +1,14 @@
-
 // Controllo il disposivo sia touch o con mouse
 const clickOrTouch = isTouchDevice() === true ? 'touchstart' : 'click'
+
+// Carica i due brani
+const backgroundMusic = new Audio('./sounds/track.mp3');
+const buttonMusic = new Audio('./sounds/obj.wav');
+backgroundMusic.loop = true;
+// Imposta i volumi 
+backgroundMusic.volume = 0.12;
+buttonMusic.volume = 0.8;
+
 
 //
 const titoloElement = document.querySelector(".titolo");
@@ -34,6 +42,29 @@ tutrial_li2.innerHTML = 'Questi sono i punti da raggiungere <div class="obj">6</
 tutrial_ul.appendChild(tutrial_li_Regole);
 tutrial_ul.appendChild(tutrial_li1);
 tutrial_ul.appendChild(tutrial_li2);
+
+// Creazione degli elementi
+const gameOverDiv = document.createElement('div');
+gameOverDiv.className = 'gameover';
+gameOverDiv.style = "top: -1000px";
+const closeButton = document.createElement('span');
+closeButton.id = 'close';
+closeButton.className = 'material-symbols-outlined';
+closeButton.textContent = 'close';
+closeButton.addEventListener('click', hideGameOver);
+
+
+const gameOverTitle = document.createElement('h1');
+gameOverTitle.textContent = 'GAME OVER!';
+
+const gameOverPoints = document.createElement('h4');
+gameOverPoints.textContent = 'Hai totalizzato 234 punti!';
+
+// Append degli elementi alla div gameover
+gameOverDiv.appendChild(closeButton);
+gameOverDiv.appendChild(gameOverTitle);
+gameOverDiv.appendChild(gameOverPoints);
+body.appendChild(gameOverDiv);
 
 if (clickOrTouch === "click") {
     const tutrial_li3 = document.createElement('li');
@@ -150,13 +181,20 @@ navElement.style = "top: -150px;";
 
 var intervalID = null; // Variabile per gestire il tempo della comparizione degli obbiettivi
 startIcon.addEventListener(clickOrTouch, function (e) {
+    // Avvia il brano di sottofondo
+    backgroundMusic.play().catch(error => {
+        console.error('Errore nella riproduzione del brano di sottofondo:', error);
+    });
+
     startEvent(e);
 });
 
 
 li_PlayStopElement.addEventListener(clickOrTouch, function (e) {
+    removesEventListener();
     pauseTimer();
     if (intervalID === null) {
+        addsEventListener();
         startTimer();
         intervalID = setInterval(createObbiettivo, difficoltaTempo());
         e.currentTarget.firstChild.innerText = "pause";
@@ -168,24 +206,8 @@ li_PlayStopElement.addEventListener(clickOrTouch, function (e) {
 
 });
 
-li_ResetElement.addEventListener(clickOrTouch, function (e) {    
-    stopTimer();
-    titoloElement.textContent = "ARRIVACI!";
-    puntiElement.textContent = "0";
-    clearInterval(intervalID);
-    intervalID = null;
-    div_livelloElement.textContent = "1";
-    progressElement.value = 0;
-    document.querySelectorAll(".obj").forEach(function (element) {
-        element.remove();
-    });
-    obbiettivi = [];
-    startIcon.classList = "material-symbols-outlined"; // riscrivo la classe per toliere l'hide
-
-    counterElement.innerText = "";
-    counterElement.appendChild(startIcon);
-
-    navElement.style = "top: -150px;";
+li_ResetElement.addEventListener(clickOrTouch, function (e) {
+    resetEvent();
 });
 
 var counterPosition = counterElement.getBoundingClientRect();
@@ -194,8 +216,7 @@ var counterPosition = counterElement.getBoundingClientRect();
 var obbiettivi = [];
 // --------------------
 let tempo = 0;
-let seconds = 0;
-let minutes = 0;
+let seconds = 15;
 let intervalId;
 let isPaused = false;
 
@@ -206,7 +227,7 @@ function pad(number, length) {
 
 function updateTimerDisplay() {
     const timerElement = document.querySelector('.titolo');
-    const formattedTime = `${pad(minutes, 2)}:${pad(seconds, 2)}`;
+    const formattedTime = `${pad(seconds, 2)}`;
     titoloElement.textContent = `${formattedTime}`;
 }
 
@@ -216,10 +237,9 @@ function startTimer() {
     intervalId = setInterval(() => {
         if (!isPaused) {
             tempo++;
-            seconds++;
-            if (seconds === 60) {
-                seconds = 0;
-                minutes++;
+            seconds--;
+            if (seconds === 0) {
+                showGameOver();
             }
         }
         updateTimerDisplay();
@@ -228,8 +248,7 @@ function startTimer() {
 
 function stopTimer() {
     clearInterval(intervalId);
-    seconds = 0;
-    minutes = 0;
+    seconds = 15;
     updateTimerDisplay();
 }
 
@@ -244,8 +263,7 @@ function resumeTimer() {
 function resetTimer() {
     clearInterval(intervalId);
     tempo = 0;
-    seconds = 0;
-    minutes = 0;
+    seconds = 15;
     updateTimerDisplay();
     isPaused = false; // Reset paused state
     startTimer();
@@ -320,19 +338,20 @@ function controlloObbiettivo(n) {
     if (obbiettivi.length < 1) { return; }
 
     if (parseInt(obbiettivi[0].textContent) === n) {
+        buttonMusic.play().catch(error => {
+            console.error('Errore nella riproduzione del brano del pulsante:', error);
+        });
         const liv = parseInt(div_livelloElement.textContent);
         const punt = parseInt(puntiElement.textContent);
-        console.log(`${punt} + 100 - (${tempo} * ${liv}) / (0.2 * ${liv})`);
-        puntiElement.textContent = parseInt(punt + 100 - (tempo * liv) / (0.2 * liv));
-        console.log(tempo);
+        //console.log(`${punt} + 100 - (${tempo} * ${liv}) / (0.2 * ${liv})`);
+        puntiElement.textContent = parseInt(punt + 100 - (tempo * liv * 0.6) / (0.2 * liv));
+        //console.log(tempo);
         resetTimer();
 
         body.removeChild(obbiettivi[0]);
         obbiettivi.shift();
-        progressElement.value = parseInt(progressElement.value) + 50; // Aumento proressione livello
+        progressElement.value = parseInt(progressElement.value) + 10; // Aumento progressione livello
 
-        //puntiElement.textContent = parseInt(puntiElement.textContent) + (10 - (parseInt(div_livelloElement.textContent) % 10) + (10 - (tempo % 10))); // Aumento punti
-        
         if (parseInt(progressElement.value) === 100) {
             progressElement.value = 0;
             div_livelloElement.textContent = parseInt(div_livelloElement.textContent) + 1;
@@ -380,25 +399,34 @@ function isTouchDevice() {
 }
 
 function bindingEventListener() {
-
     // Aggiungi un listener per l'evento touch solo se il dispositivo è touchscreen
+    removesEventListener();
+    addsEventListener();
+}
+
+function removesEventListener() {
     if (isTouchDevice()) {
         document.removeEventListener('touchstart', binding_Touch);
-        document.addEventListener('touchstart', binding_Touch);
     } else {
         document.removeEventListener("keydown", binding_keydown);
         document.removeEventListener("click", biding_clickLeftMouse);
         document.removeEventListener("contextmenu", biding_clickRightMouse);
         document.removeEventListener("wheel", binding_wheel);
+    }
+}
 
+function addsEventListener() {
+    if (isTouchDevice()) {
+        removesEventListener()
+        document.addEventListener('touchstart', binding_Touch);
+    } else {
+        removesEventListener()
         document.addEventListener("keydown", binding_keydown);
         document.addEventListener("click", biding_clickLeftMouse);
         document.addEventListener("contextmenu", biding_clickRightMouse);
         document.addEventListener("wheel", binding_wheel);
     }
 }
-
-
 // Funzioni per i singoli tipi di Binding 
 
 function binding_Touch(e) { // Dispositivi Touch
@@ -433,4 +461,43 @@ function biding_clickRightMouse(e) {
 }
 function binding_wheel(e) {
     e.deltaY < 0 ? addFunction() : minusFunction();
+}
+function resetEvent() {
+    backgroundMusic.pause();
+    removesEventListener();
+    stopTimer();
+    titoloElement.textContent = "ARRIVACI!";
+    puntiElement.textContent = "0";
+    clearInterval(intervalID);
+    intervalID = null;
+    div_livelloElement.textContent = "1";
+    progressElement.value = 0;
+    document.querySelectorAll(".obj").forEach(function (element) {
+        element.remove();
+    });
+    obbiettivi = [];
+    startIcon.classList = "material-symbols-outlined"; // riscrivo la classe per toliere l'hide
+
+    counterElement.innerText = "";
+    counterElement.appendChild(startIcon);
+
+    navElement.style = "top: -150px;";
+}
+
+function showGameOver() {
+    gameOverPoints.textContent = `Hai totalizzato ${puntiElement.textContent} punti`;
+    gameOverDiv.style = "";
+    gameOverDiv.classList.remove('hide');
+    gameOverDiv.classList.add('show');
+    resetEvent()
+
+
+}
+function hideGameOver() {
+    gameOverDiv.classList.add('hide');
+    gameOverDiv.style = "top: -1000px";
+
+    gameOverDiv.addEventListener('transitionend', function () {
+        gameOverDiv.classList.remove('show', 'hide');
+    }, { once: true });
 }

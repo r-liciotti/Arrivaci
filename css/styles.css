@@ -116,7 +116,7 @@ nav {
   margin: 12px 0 2px 0;
 }
 
-.tutorial .counter, 
+.tutorial .counter,
 .tutorial .obj {
   width: 3vw;
   height: 3vw;
@@ -188,7 +188,7 @@ nav .punteggio {
   position: relative;
 }
 
-#punti{
+#punti {
   position: absolute;
   left: 50%;
 
@@ -231,6 +231,52 @@ progress::-webkit-progress-value {
   border-radius: 20px;
   transition: all 0.5s;
 
+}
+
+.gameover {
+  position: absolute;
+  text-align: right;
+  z-index: 6;
+  width: 60vw;
+  height: 45vw;
+  border: 2px solid #6738ad;
+  background-color: #7645bf;
+  border-radius: 3vw;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.gameover h1 {
+  font-size: 8vw;
+  color: #30007775;
+  text-shadow: 2px 2px 0px rgb(163 99 255 / 70%);
+  text-align: center;
+  margin: 0;
+}
+
+.gameover h4 {
+  font-size: 3vw;
+  text-align: center;
+}
+
+.gameover #close {
+  display: inline-block;
+  font-size: 5vw;
+  margin: 10px;
+  text-align: right;
+
+  background-color: #6e0bff;
+  box-shadow: 3px 4px 1px #581faf;
+  border-radius: 1.3vw;
+}
+
+.gameover.show {
+  display: block;
+  opacity: 1;
+  /* transform: translate(-50%, -50%) scale(1); */
+}
+
+.gameover.hide {
+  opacity: 0;
 }
 
 
