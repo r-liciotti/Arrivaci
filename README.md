@@ -13,7 +13,6 @@
 
 <p align="center">
   <a href="#descrizione">Descrizione</a> •
-  <a href="#how-to-use">How To Use</a> •
   <a href="#play">Play</a> •
   <a href="#strumenti">Strumenti</a> •
 </p>
@@ -26,9 +25,6 @@ Arrivaci! è un semplice gioco, nato inizialmente da un progetto che richiedeva 
 L'obbiettivo è di fare più punti possibili, punti che si prendono aumentando o diminuendo il valore del counter in base agli obbiettivi che apparriranno sullo schermo.
 Si avranno al massimo dieci secondi per arrivare all'obbiettivo dopo i quali si farà Game Over.
 E' possibile giocare sia con mouse, tastiera o con il touch di un dispositivo che lo supporti (Smartphone/Tablet).
-
-
-## How To Use
 
 
 
