@@ -30,7 +30,7 @@
   <a href="#credits">Credits</a> •
 </p>
 
-![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/app/img/markdownify.gif](https://github.com/r-liciotti/Arrivaci/blob/main/video/trailer.gif)
+![screenshot](https://github.com/r-liciotti/Arrivaci/blob/514be9cfa84e1b5e57f56f4016f065b3cab330d0/video/trailer.gif)
 
 ## Descrizione
 
