@@ -29,7 +29,7 @@ E' possibile giocare sia con mouse, tastiera o con il touch di un dispositivo ch
 
 ## Tutorial
 
-Arrivami! si basa sul valore del countatore, posto in centro alla paginam che deve raggiungere i valori degli obbiettivi che compaiano a schermo.
+Arrivaci! si basa sul valore del countatore, posto in centro alla paginam che deve raggiungere i valori degli obbiettivi che compaiano a schermo.</br>
 Devono essere completati gli obbiettivi in baso all'ordine "cronologico" di comparsa prima dello scadero del tempo, al completamento di un obbiettivo verranno aggiunti dei punti calcolati da una formula che tiene in considerazione il livello e il tempo impiegato. Quando la progress bar si completa, si sale al livello successivo che abbassa l'intervallo di comparsa degli obbietivi.
 Il gioco supporta sia i dispositivi touch che il desktop.
 Per i touchscreen si utilizza il lato sinistro e destro dello schermo, toccandoli possiamo far aumentare o diminuire valore del counter.
