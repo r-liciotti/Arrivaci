@@ -114,9 +114,9 @@ if (clickOrTouch === "click") {
     tutrial_li3.appendChild(tutrial_h4_1);
 
     const tutrial_li4 = document.createElement('li');
-    tutrial_li4.innerHTML = '<b>Tocca la meta Sinistra</b> per Aumentare Punti';
+    tutrial_li4.innerHTML = '<b>Tocca la meta Sinistra</b> per Diminuire Punti';
     const tutrial_li5 = document.createElement('li');
-    tutrial_li5.innerHTML = '<b>Tocca la meta Destra</b> per Diminuire Punti';
+    tutrial_li5.innerHTML = '<b>Tocca la meta Destra</b> per Aumentare Punti';
     tutrial_ul.appendChild(tutrial_li3);
     tutrial_ul.appendChild(tutrial_li4);
     tutrial_ul.appendChild(tutrial_li5);
@@ -454,14 +454,14 @@ function binding_keydown(e) {
     e.key === "-" ? minusFunction() : null;
 }
 function biding_clickLeftMouse(e) {
-    if (e.target.tagName === 'BODY' && e.button === 0) {
-        addFunction();
+    if (e.target.tagName === 'BODY' && e.button === 0) {        
+        minusFunction();
     }
 }
 function biding_clickRightMouse(e) {
     if (e.target.tagName !== 'BODY') { return; }
     e.preventDefault(); // Prevenire il menu contestuale
-    minusFunction();
+    addFunction();
 }
 function binding_wheel(e) {
     e.deltaY < 0 ? addFunction() : minusFunction();
