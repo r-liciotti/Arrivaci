@@ -1,17 +1,18 @@
 // Controllo il disposivo sia touch o con mouse
 const clickOrTouch = isTouchDevice() === true ? 'touchstart' : 'click'
 
-// Carica i due brani
+// Caricamento brani
 const backgroundMusic = new Audio('./sounds/track.mp3');
 const gameoverMusic = new Audio('./sounds/GameOver.wav');
 const buttonMusic = new Audio('./sounds/obj.wav');
+
 backgroundMusic.loop = true;
-// Imposta i volumi 
 backgroundMusic.volume = 0.12;
 buttonMusic.volume = 0.8;
 gameoverMusic.volume = 0.5;
 
-//
+// Creazione elementi DOM
+// Titolo
 const titoloElement = document.querySelector(".titolo");
 
 // Counter
@@ -31,7 +32,6 @@ tutorialDiv.classList.add('tutorial');
 
 const tutrial_ul = document.createElement('ul');
 
-
 const tutrial_li_Regole = document.createElement('li');
 tutrial_li_Regole.innerHTML = 'REGOLE:';
 tutrial_li_Regole.classList = "regole"
@@ -48,7 +48,7 @@ tutrial_ul.appendChild(tutrial_li2);
 tutrial_ul.appendChild(tutrial_li3);
 
 
-// Creazione degli elementi
+// Creazione finestra GameOver
 const gameOverDiv = document.createElement('div');
 gameOverDiv.className = 'gameover';
 gameOverDiv.style = "top: -1000px";
@@ -57,7 +57,6 @@ closeButton.id = 'close';
 closeButton.className = 'material-symbols-outlined';
 closeButton.textContent = 'close';
 closeButton.addEventListener('click', hideGameOver);
-
 
 const gameOverTitle = document.createElement('h1');
 gameOverTitle.textContent = 'GAME OVER!';
@@ -71,6 +70,7 @@ gameOverDiv.appendChild(gameOverTitle);
 gameOverDiv.appendChild(gameOverPoints);
 body.appendChild(gameOverDiv);
 
+//  Creazione elementi tutorial distinzione tra mobile e desktop
 if (clickOrTouch === "click") {
     const tutrial_li3 = document.createElement('li');
     const tutrial_h4_1 = document.createElement('h4');
@@ -122,10 +122,6 @@ if (clickOrTouch === "click") {
     tutrial_ul.appendChild(tutrial_li4);
     tutrial_ul.appendChild(tutrial_li5);
 }
-
-
-
-
 tutorialDiv.appendChild(tutrial_ul);
 
 // Nav
@@ -168,9 +164,9 @@ div_PunteggioElement.appendChild(div_livelloElement);
 div_PunteggioElement.appendChild(progressElement);
 div_PunteggioElement.appendChild(puntiElement);
 
-
-navElement.appendChild(divElement);
 divElement.appendChild(div_PunteggioElement);
+navElement.appendChild(divElement);
+
 body.appendChild(navElement);
 body.appendChild(counterElement);
 body.appendChild(tutorialDiv);
@@ -180,21 +176,17 @@ navElement.style = "top: -150px;";
 
 
 
-
-
-
-
 var intervalID = null; // Variabile per gestire il tempo della comparizione degli obbiettivi
+
+// Binding per lo start del gioco
 startIcon.addEventListener(clickOrTouch, function (e) {
     // Avvia il brano di sottofondo
-    backgroundMusic.play().catch(error => {
-        console.error('Errore nella riproduzione del brano di sottofondo:', error);
-    });
+    backgroundMusic.play();
 
     startEvent(e);
 });
 
-
+// Binding per lo pause e play secondari del gioco
 li_PlayStopElement.addEventListener(clickOrTouch, function (e) {
     removesEventListener();
     pauseTimer();
@@ -211,20 +203,24 @@ li_PlayStopElement.addEventListener(clickOrTouch, function (e) {
 
 });
 
+// Binding del reset
 li_ResetElement.addEventListener(clickOrTouch, function (e) {
     resetEvent();
 });
 
-var counterPosition = counterElement.getBoundingClientRect();
+// Ottengo le posizione degli elementi che mi serve per evitare che gli obbiettivi che si generano casualmente si sovrappongono al counter ed alla nav
+const counterPosition = counterElement.getBoundingClientRect();
+const navPosition = navElement.children[0].getBoundingClientRect();
 
+var obbiettivi = []; //Vettore contenente gli obbiettivi
 
-var obbiettivi = [];
-// --------------------
+// Creazione e gestione del timer
 let tempo = 0;
 let seconds = 15;
 let intervalId;
 let isPaused = false;
 
+// Funzione estione timer
 function pad(number, length) {
     const str = String(number);
     return '0'.repeat(length - str.length) + str;
@@ -273,84 +269,59 @@ function resetTimer() {
     isPaused = false; // Reset paused state
     startTimer();
 }
+// END Gestione Timer 
 
 
-// -------------------------
-
-
-
+// Creazione obbiettivo
 function createObbiettivo() {
+    //Creo elemento
     let divX = 0;
     let divY = 0;
     let obj_element = document.createElement("div");
     obj_element.classList = "obj " + (obbiettivi.length + 1);
 
-
-    // Imposta la posizione casuale    
+    counterPosition = counterElement.getBoundingClientRect();
+    console.log(navElement);
+    console.log(navElement.children[0]);
+    // genero una posizione casuale che non si sovrappone ad altri elementi
     while (true) {
+        divX = Math.random() * (window.innerWidth - 60);
+        divY = Math.random() * (window.innerHeight - 60);
 
-        divX = Math.random() * (window.innerWidth - 300);
-        divY = Math.random() * (window.innerHeight - 300);
-
-        if ((divX >= counterPosition.left && divX <= counterPosition.right)
-            && (divY >= counterPosition.top && divY >= counterPosition.bottom)) {
-            // console.log("divX");
-            // console.log("divX " + divX);
-            // console.log("counter X " + counterPosition.left);
-            // console.log("counterWidth " + counter.offsetWidth);
-            // console.log("counter tot " + (counterPosition.left + counter.offsetWidth));
-
-            continue;
+        if ((((divX + 60) < counterPosition.left || (divX + 60) > counterPosition.right) &&
+            ((divY + 60) < counterPosition.top || (divY + 60) > counterPosition.bottom)) &&
+            (((divX + 60) < navPosition.left || (divX + 60) > navPosition.right) &&
+                ((divY + 60) < navPosition.top || (divY + 60) > navPosition.bottom))) {
+ 
+            break; // Exit the loop when a suitable position is found
         }
-        break;
     }
 
     obj_element.style.left = divX + "px";
     obj_element.style.top = divY + "px";
     obj_element.textContent = generaNumeroCasuale((parseInt(counterElement.textContent) - 10), (parseInt(counterElement.textContent) + 10))
 
-
     obbiettivi.push(obj_element);
     body.appendChild(obj_element);
-
 }
-
-
-function addFunction() {
-
-    if (!isNaN(Number(counterElement.textContent))) {
-        counterElement.textContent = parseInt(counterElement.textContent) + 1;
-
-        controlloObbiettivo(parseInt(counterElement.textContent));
-    }
-}
-
-function minusFunction() {
-    if (!isNaN(Number(counterElement.textContent))) {
-        counterElement.textContent = parseInt(counterElement.textContent) - 1;
-        controlloObbiettivo(parseInt(counterElement.textContent));
-    }
-}
+// END - createObbiettivo()
 
 
 function generaNumeroCasuale(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
+// Gestione dell'obbiettivo, se è stato raggiunto
 function controlloObbiettivo(n) {
 
     if (obbiettivi.length < 1) { return; }
 
     if (parseInt(obbiettivi[0].textContent) === n) {
-        buttonMusic.play().catch(error => {
-            console.error('Errore nella riproduzione del brano del pulsante:', error);
-        });
+        buttonMusic.play();
         const liv = parseInt(div_livelloElement.textContent);
         const punt = parseInt(puntiElement.textContent);
         //console.log(`${punt} + 100 - (${tempo} * ${liv}) / (0.2 * ${liv})`);
-        puntiElement.textContent = parseInt(punt + 100 - (tempo * liv * 0.6) / (0.2 * liv));
-        //console.log(tempo);
+        puntiElement.textContent = parseInt(punt + 100 - (tempo * liv * 0.6) / (0.2 * liv)); // Formula per calcolo dei punti
         resetTimer();
 
         body.removeChild(obbiettivi[0]);
@@ -364,109 +335,27 @@ function controlloObbiettivo(n) {
             clearInterval(intervalID);
             intervalID = setInterval(createObbiettivo, difficoltaTempo());
         }
-
     }
 }
+// End Gestione Obbiettivi
 
+// Gestione Inizio del gioco
 function startEvent(e) {
     e.target.classList.add("hide");
     tutorialDiv.remove();
     startTimer();
 
-    // titoloElement.textContent = "00:00";
     setTimeout(() => {
         counterElement.textContent = "0";
         intervalID = setInterval(createObbiettivo, difficoltaTempo());
         bindingEventListener();
-
-
     }, 700);
 
-
     navElement.style = "top: 0px;";
-    // Esegui la funzione ogni 5 secondi
     li_PlayStopElement.firstChild.innerText = "pause";
-
 }
 
-function difficoltaTempo() {
-
-    const lvl = parseInt(div_livelloElement.textContent);
-    if (lvl === 1) { return 3000; }
-    return 3000 - (lvl * 225);
-}
-
-// Verifica se il dispositivo supporta il touch
-function isTouchDevice() {
-    // Controlla se l'evento ontouchstart è presente in windows
-    // significa che il dispositivo ha il touchscreen
-    return 'ontouchstart' in window || navigator.maxTouchPoints;
-}
-
-function bindingEventListener() {
-    // Aggiungi un listener per l'evento touch solo se il dispositivo è touchscreen
-    removesEventListener();
-    addsEventListener();
-}
-
-function removesEventListener() {
-    if (isTouchDevice()) {
-        document.removeEventListener('touchstart', binding_Touch);
-    } else {
-        document.removeEventListener("keydown", binding_keydown);
-        document.removeEventListener("click", biding_clickLeftMouse);
-        document.removeEventListener("contextmenu", biding_clickRightMouse);
-        document.removeEventListener("wheel", binding_wheel);
-    }
-}
-
-function addsEventListener() {
-    if (isTouchDevice()) {
-        removesEventListener()
-        document.addEventListener('touchstart', binding_Touch);
-    } else {
-        removesEventListener()
-        document.addEventListener("keydown", binding_keydown);
-        document.addEventListener("click", biding_clickLeftMouse);
-        document.addEventListener("contextmenu", biding_clickRightMouse);
-        document.addEventListener("wheel", binding_wheel);
-    }
-}
-// Funzioni per i singoli tipi di Binding 
-
-function binding_Touch(e) { // Dispositivi Touch
-    // Controllo non scatti l'aumento di punti se tocco un bottone.
-    if (e.target.tagName !== 'BODY') { return; }
-    if (isNaN(parseInt(counterElement.textContent))) { return; }
-    // Gestisci l'evento touch qui
-    // Ottieni le coordinate del tocco rispetto allo schermo
-    var touchX = e.touches[0].clientX;
-    // Ottieni la larghezza dello schermo
-    var screenWidth = window.innerWidth;
-    // Calcola la metà dello schermo
-    var halfScreenWidth = screenWidth / 2;
-    // Determina se il tocco è sulla parte sinistra o destra dello schermo
-    touchX < halfScreenWidth ? minusFunction() : addFunction();
-}
-
-function binding_keydown(e) {
-
-    e.key === "+" ? addFunction() : null;
-    e.key === "-" ? minusFunction() : null;
-}
-function biding_clickLeftMouse(e) {
-    if (e.target.tagName === 'BODY' && e.button === 0) {        
-        minusFunction();
-    }
-}
-function biding_clickRightMouse(e) {
-    if (e.target.tagName !== 'BODY') { return; }
-    e.preventDefault(); // Prevenire il menu contestuale
-    addFunction();
-}
-function binding_wheel(e) {
-    e.deltaY < 0 ? addFunction() : minusFunction();
-}
+// Gestione del reset gioco
 function resetEvent() {
     backgroundMusic.pause();
     removesEventListener();
@@ -489,6 +378,109 @@ function resetEvent() {
     navElement.style = "top: -150px;";
 }
 
+
+// Gestione dell'intervallo della creazione degli obbiettivi in base al livello 
+function difficoltaTempo() {
+    const lvl = parseInt(div_livelloElement.textContent);
+    if (lvl === 1) { return 3000; }
+    return 3000 - (lvl * 225);
+}
+
+// Verifica se il dispositivo supporta il touch
+function isTouchDevice() {
+    // Controlla se l'evento ontouchstart è presente in windows
+    // significa che il dispositivo ha il touchscreen
+    return 'ontouchstart' in window || navigator.maxTouchPoints;
+}
+
+
+// Funzione cappello per estione bindingEvent
+function bindingEventListener() {
+    // Aggiungi un listener per l'evento touch solo se il dispositivo è touchscreen
+    removesEventListener();
+    addsEventListener();
+}
+
+// Rimozione degli event listener
+function removesEventListener() {
+    if (isTouchDevice()) {
+        document.removeEventListener('touchstart', binding_Touch);
+    } else {
+        document.removeEventListener("keydown", binding_keydown);
+        document.removeEventListener("click", biding_clickLeftMouse);
+        document.removeEventListener("contextmenu", biding_clickRightMouse);
+        document.removeEventListener("wheel", binding_wheel);
+    }
+}
+
+// Aggiunta degli event listener
+function addsEventListener() {
+    if (isTouchDevice()) {
+        removesEventListener()
+        document.addEventListener('touchstart', binding_Touch);
+    } else {
+        removesEventListener()
+        document.addEventListener("keydown", binding_keydown);
+        document.addEventListener("click", biding_clickLeftMouse);
+        document.addEventListener("contextmenu", biding_clickRightMouse);
+        document.addEventListener("wheel", binding_wheel);
+    }
+}
+
+// Funzioni agganciate ai singoli tipi di Binding 
+function binding_Touch(e) { // Dispositivi Touch
+    // Controllo non scatti l'aumento di punti se tocco un bottone.
+    if (e.target.tagName !== 'BODY') { return; }
+    if (isNaN(parseInt(counterElement.textContent))) { return; }
+    // Gestisci l'evento touch qui
+    // Ottieni le coordinate del tocco rispetto allo schermo
+    var touchX = e.touches[0].clientX;
+    // Ottieni la larghezza dello schermo
+    var screenWidth = window.innerWidth;
+    // Calcola la metà dello schermo
+    var halfScreenWidth = screenWidth / 2;
+    // Determina se il tocco è sulla parte sinistra o destra dello schermo
+    touchX < halfScreenWidth ? minusFunction() : addFunction();
+}
+
+function binding_keydown(e) {
+    e.key === "+" ? addFunction() : null;
+    e.key === "-" ? minusFunction() : null;
+}
+
+function biding_clickLeftMouse(e) {
+    if (e.target.tagName === 'BODY' && e.button === 0) {
+        minusFunction();
+    }
+}
+
+function biding_clickRightMouse(e) {
+    if (e.target.tagName !== 'BODY') { return; }
+    e.preventDefault(); // Prevenire il menu contestuale
+    addFunction();
+}
+function binding_wheel(e) {
+    e.deltaY < 0 ? addFunction() : minusFunction();
+}
+// END Gestione Funzione agganciate ai singoli event
+
+// Gestione aumento e diminuzione punti
+function addFunction() {
+    if (!isNaN(Number(counterElement.textContent))) {
+        counterElement.textContent = parseInt(counterElement.textContent) + 1;
+        controlloObbiettivo(parseInt(counterElement.textContent));
+    }
+}
+
+function minusFunction() {
+    if (!isNaN(Number(counterElement.textContent))) {
+        counterElement.textContent = parseInt(counterElement.textContent) - 1;
+        controlloObbiettivo(parseInt(counterElement.textContent));
+    }
+}
+
+
+// Gestione GameOver
 function showGameOver() {
     gameoverMusic.play().catch(error => {
         console.error('Errore nella riproduzione del brano del pulsante:', error);
@@ -497,9 +489,7 @@ function showGameOver() {
     gameOverDiv.style = "";
     gameOverDiv.classList.remove('hide');
     gameOverDiv.classList.add('show');
-    resetEvent()
-
-
+    resetEvent();
 }
 function hideGameOver() {
     gameOverDiv.classList.add('hide');

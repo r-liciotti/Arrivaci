@@ -99,11 +99,13 @@ nav {
 
 .tutorial {
   color: #3c3c3c;
+  
 
 }
 
 .tutorial ul {
   list-style-type: none;
+  padding: 0;
 }
 
 .tutorial ul li {
