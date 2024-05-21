@@ -209,8 +209,8 @@ li_ResetElement.addEventListener(clickOrTouch, function (e) {
 });
 
 // Ottengo le posizione degli elementi che mi serve per evitare che gli obbiettivi che si generano casualmente si sovrappongono al counter ed alla nav
-const counterPosition = counterElement.getBoundingClientRect();
-const navPosition = navElement.children[0].getBoundingClientRect();
+var counterPosition = counterElement.getBoundingClientRect();
+var navPosition = navElement.children[0].getBoundingClientRect();
 
 var obbiettivi = []; //Vettore contenente gli obbiettivi
 
@@ -281,8 +281,8 @@ function createObbiettivo() {
     obj_element.classList = "obj " + (obbiettivi.length + 1);
 
     counterPosition = counterElement.getBoundingClientRect();
-    console.log(navElement);
-    console.log(navElement.children[0]);
+    navPosition = navElement.children[0].getBoundingClientRect();
+    
     // genero una posizione casuale che non si sovrappone ad altri elementi
     while (true) {
         divX = Math.random() * (window.innerWidth - 60);
