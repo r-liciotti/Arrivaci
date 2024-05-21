@@ -35,7 +35,7 @@ Il gioco supporta sia i dispositivi touch che il desktop.</br>
 Per i touchscreen si utilizza il lato sinistro e destro dello schermo, toccandoli possiamo far aumentare o diminuire valore del counter.</br>
 Per gli altri tipi di dispositivi, desktop, ci sono varie modalità d'utilizzo:</br>
   • Tastiera: tasti "+" e "-"</br>
-  • Mouse: Click destro/sinistro mouse oppure con il movimento della rotellina centrale.
+  • Mouse: Click Destro/Sinistro mouse oppure con il movimento della rotellina centrale.
 
 
 ## Play
