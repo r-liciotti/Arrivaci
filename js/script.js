@@ -3,12 +3,13 @@ const clickOrTouch = isTouchDevice() === true ? 'touchstart' : 'click'
 
 // Carica i due brani
 const backgroundMusic = new Audio('./sounds/track.mp3');
+const gameoverMusic = new Audio('./sounds/GameOver.wav');
 const buttonMusic = new Audio('./sounds/obj.wav');
 backgroundMusic.loop = true;
 // Imposta i volumi 
 backgroundMusic.volume = 0.12;
 buttonMusic.volume = 0.8;
-
+gameoverMusic.volume = 0.5;
 
 //
 const titoloElement = document.querySelector(".titolo");
@@ -489,6 +490,9 @@ function resetEvent() {
 }
 
 function showGameOver() {
+    gameoverMusic.play().catch(error => {
+        console.error('Errore nella riproduzione del brano del pulsante:', error);
+    });
     gameOverPoints.textContent = `Hai totalizzato ${puntiElement.textContent} punti`;
     gameOverDiv.style = "";
     gameOverDiv.classList.remove('hide');
