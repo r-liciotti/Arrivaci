@@ -186,7 +186,7 @@ function resetEvent() {
 
     navElement.style = "top: -150px;"; // Nascondo la navbar
 }
-// Rimuove tutti li obbiettivi
+// Rimuove tutti gli obbiettivi
 function removeAllObject() {
     document.querySelectorAll(".obj").forEach(function (element) { //
         element.remove();
@@ -319,12 +319,12 @@ function controlloObbiettivo(n) {
         if (parseInt(progressElement.value) === 100) { aumentaLivello(); } // se progress bar è all 100%, aumento il livello
     }
 }
-function calcoloPunti(){
+function calcoloPunti() {
     const liv = parseInt(divLivelloElement.textContent);
     const punt = parseInt(divPuntiElement.textContent);
     return parseInt(punt + 100 - (tempo * liv * 0.6) / (0.2 * liv));
 }
-function aumentaLivello(){
+function aumentaLivello() {
     progressElement.value = 0;
     divLivelloElement.textContent = parseInt(divLivelloElement.textContent) + 1;
 
