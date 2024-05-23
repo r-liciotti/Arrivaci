@@ -2,9 +2,9 @@
 const clickOrTouch = isTouchDevice() === true ? 'touchstart' : 'click';
 
 // Caricamento brani
-const backgroundMusic = new Audio('.assets/sounds/track.mp3');
-const gameOverSound = new Audio('.assets/sounds/GameOver.wav');
-const objCompletedSound = new Audio('.assets/sounds/obj.wav');
+const backgroundMusic = new Audio('./assets/sounds/track.mp3');
+const gameOverSound = new Audio('./assets/sounds/GameOver.wav');
+const objCompletedSound = new Audio('./assets/sounds/obj.wav');
 
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.12;
