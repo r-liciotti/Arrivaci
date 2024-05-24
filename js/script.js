@@ -315,7 +315,7 @@ function controlloObbiettivo(n) {
         divWrapper.removeChild(obbiettivi[0]); // Rimuovo l'obbiettivo raggiunto
         obbiettivi.shift();
 
-        progressElement.value = parseInt(progressElement.value) + 10; // Aumento progressione livello
+        progressElement.value = parseInt(progressElement.value) + 10; // Aumento la progressBar 
         if (parseInt(progressElement.value) === 100) { aumentaLivello(); } // se progress bar è all 100%, aumento il livello
     }
 }
@@ -342,7 +342,7 @@ function difficoltaTempo() {
 
 
 
-// Gestione GameOver
+// Gestione Finestra GameOver
 function showGameOver() {
     gameOverSound.play();
     puntiTotalizzatiElement.textContent = `Hai totalizzato ${divPuntiElement.textContent} punti`;
@@ -364,7 +364,7 @@ function hideGameOver() {
 // END Gestione GameOVer
 
 
-// -----------------------------
+// Funzione per creare gli elementi html
 function createElement(tag, id, className, content) {
     const el = document.createElement(tag);
     if (id !== null) { el.id = id; }
@@ -382,16 +382,16 @@ function isTouchDevice() {
 }
 
 
-// Funzione cappello per estione bindingEvent
+// Funzione cappello per gestione bindingEvent
 function bindingEventListener() {
-    // Aggiungi un listener per l'evento touch solo se il dispositivo è touchscreen
-    removesEventListener();
-    addsEventListener();
+    removesEventListener(); // Prima rimuovo i Binding aperti
+    addsEventListener(); // Riassocio i binding
 }
 
 // Rimozione degli event listener
 function removesEventListener() {
     if (isTouchDevice()) {
+          // Aggiungi il listener per l'evento touch solo se il dispositivo è touchscreen
         document.removeEventListener('touchstart', binding_Touch);
     } else {
         document.removeEventListener("keydown", binding_keydown);
@@ -416,6 +416,7 @@ function addsEventListener() {
 }
 
 // Funzioni agganciate ai singoli tipi di Binding 
+//
 function binding_Touch(e) { // Dispositivi Touch
     // Controllo non scatti l'aumento di punti se tocco un bottone.
     if (e.target.classList[0] !== 'wrapper') { return; }

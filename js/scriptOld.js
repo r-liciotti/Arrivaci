@@ -1,3 +1,6 @@
+//
+// FILE DEPRECATO
+//
 // Controllo il disposivo sia touch o con mouse
 const clickOrTouch = isTouchDevice() === true ? 'touchstart' : 'click'
 
